@@ -1,0 +1,104 @@
+definitions:
+  entity.UserAddDTO:
+    properties:
+      email:
+        example: example@imgo.com
+        type: string
+      full_name:
+        example: Lich Truong
+        maxLength: 3
+        type: string
+      password:
+        example: W3^&(80)&&^x
+        type: string
+      username:
+        example: lichtv
+        format: ^[a-zA-Z0-9]+(?:-[a-zA-Z0-9]+)*$
+        type: string
+    type: object
+  entity.UserResponseDTO:
+    properties:
+      created_at:
+        example: "1991-02-13 10:10:10"
+        type: string
+      email:
+        example: example@imgo.com
+        type: string
+      full_name:
+        example: Lich Truong
+        type: string
+      id:
+        example: 1
+        type: integer
+      modified_at:
+        example: "2020-07-15 10:10:10"
+        type: string
+      status:
+        example: 1
+        type: integer
+      username:
+        example: lichtv
+        type: string
+    type: object
+info:
+  contact: {}
+  license: {}
+paths:
+  /identity/v1/user:
+    post:
+      consumes:
+      - application/json
+      description: 'Author: LichTV'
+      parameters:
+      - description: string
+        enum:
+        - en
+        - vi
+        in: query
+        name: lang
+        type: string
+      - description: Add a new user body
+        in: body
+        name: UserAddDTO
+        required: true
+        schema:
+          $ref: '#/definitions/entity.UserAddDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            $ref: '#/definitions/entity.UserResponseDTO'
+      summary: Add a new user
+      tags:
+      - identity
+  /identity/v1/user/{user_id}:
+    get:
+      consumes:
+      - application/json
+      description: 'Author: LichTV'
+      parameters:
+      - description: string
+        enum:
+        - en
+        - vi
+        in: query
+        name: lang
+        type: string
+      - description: number
+        in: path
+        name: user_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            $ref: '#/definitions/entity.UserResponseDTO'
+      summary: Detail info of user
+      tags:
+      - identity
+swagger: "2.0"

@@ -1,0 +1,15 @@
+mongo:
+  im:
+    url: "mongodb://localhost:27017"
+    database: "im"
+    pool_limit: 200
+mysql:
+  im:
+    url: "root:root123456@/im"
+    database: "im"
+    pool_limit: 200
+
+redis:
+  url: "redis://127.0.0.1:6379/0"
+
+port: "8080"

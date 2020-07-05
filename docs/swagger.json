@@ -1,0 +1,153 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "contact": {},
+        "license": {}
+    },
+    "paths": {
+        "/identity/v1/user": {
+            "post": {
+                "description": "Author: LichTV",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "identity"
+                ],
+                "summary": "Add a new user",
+                "parameters": [
+                    {
+                        "enum": [
+                            "en",
+                            "vi"
+                        ],
+                        "type": "string",
+                        "description": "string",
+                        "name": "lang",
+                        "in": "query"
+                    },
+                    {
+                        "description": "Add a new user body",
+                        "name": "UserAddDTO",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/entity.UserAddDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "schema": {
+                            "$ref": "#/definitions/entity.UserResponseDTO"
+                        }
+                    }
+                }
+            }
+        },
+        "/identity/v1/user/{user_id}": {
+            "get": {
+                "description": "Author: LichTV",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "identity"
+                ],
+                "summary": "Detail info of user",
+                "parameters": [
+                    {
+                        "enum": [
+                            "en",
+                            "vi"
+                        ],
+                        "type": "string",
+                        "description": "string",
+                        "name": "lang",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "number",
+                        "name": "user_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "schema": {
+                            "$ref": "#/definitions/entity.UserResponseDTO"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "entity.UserAddDTO": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string",
+                    "example": "example@imgo.com"
+                },
+                "full_name": {
+                    "type": "string",
+                    "maxLength": 3,
+                    "example": "Lich Truong"
+                },
+                "password": {
+                    "type": "string",
+                    "example": "W3^\u0026(80)\u0026\u0026^x"
+                },
+                "username": {
+                    "type": "string",
+                    "format": "^[a-zA-Z0-9]+(?:-[a-zA-Z0-9]+)*$",
+                    "example": "lichtv"
+                }
+            }
+        },
+        "entity.UserResponseDTO": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string",
+                    "example": "1991-02-13 10:10:10"
+                },
+                "email": {
+                    "type": "string",
+                    "example": "example@imgo.com"
+                },
+                "full_name": {
+                    "type": "string",
+                    "example": "Lich Truong"
+                },
+                "id": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "modified_at": {
+                    "type": "string",
+                    "example": "2020-07-15 10:10:10"
+                },
+                "status": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "username": {
+                    "type": "string",
+                    "example": "lichtv"
+                }
+            }
+        }
+    }
+}
