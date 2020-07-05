@@ -4,11 +4,10 @@
 2. Config
    - config/development.yaml|etc...
 3. Database
-   - database/sql/*
+   - src/database/sql/*
 4. Start
    - go run main.go dev|test|stg|prod
 5. Test:
-   - cd test/
    - go test ./...
 6. Swagger
    - swag init & restart server
