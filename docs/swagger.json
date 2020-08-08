@@ -35,7 +35,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/entity.UserAddDTO"
+                            "$ref": "#/definitions/dto.UserAdd"
                         }
                     }
                 ],
@@ -43,7 +43,7 @@
                     "200": {
                         "description": "success",
                         "schema": {
-                            "$ref": "#/definitions/entity.UserResponseDTO"
+                            "$ref": "#/definitions/dto.UserResponse"
                         }
                     }
                 }
@@ -85,7 +85,7 @@
                     "200": {
                         "description": "success",
                         "schema": {
-                            "$ref": "#/definitions/entity.UserResponseDTO"
+                            "$ref": "#/definitions/dto.UserResponse"
                         }
                     }
                 }
@@ -93,7 +93,7 @@
         }
     },
     "definitions": {
-        "entity.UserAddDTO": {
+        "dto.UserAdd": {
             "type": "object",
             "properties": {
                 "email": {
@@ -116,7 +116,7 @@
                 }
             }
         },
-        "entity.UserResponseDTO": {
+        "dto.UserResponse": {
             "type": "object",
             "properties": {
                 "created_at": {
