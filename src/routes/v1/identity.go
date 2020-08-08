@@ -8,16 +8,16 @@ import (
 	"imgo/src/modules/identity/v1/repository"
 	"imgo/src/modules/identity/v1/service"
 
-	"imgo/src/database"
 	"imgo/src/response"
 
 	"github.com/gin-gonic/gin"
+	"github.com/jinzhu/gorm"
 )
 
 var res = response.NewRestResponse(utils.NewIMLanguage(resource.IdentityLang, resource.DefaultLang), resource.CodeMessageMapping)
 
 // UserRoute : user route
-func UserRoute(r *gin.RouterGroup, db database.SQLDb) {
+func UserRoute(r *gin.RouterGroup, db *gorm.DB) {
 	userRepository := repository.NewUserRepository(db)
 	userHandler := http.NewUserHandler(service.NewUserService(userRepository), res)
 	r.POST("/user", userHandler.Add)

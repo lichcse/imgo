@@ -1,3 +1,4 @@
+port: "8000"
 mongo:
   im:
     url: "mongodb://localhost:27017"
@@ -8,8 +9,7 @@ mysql:
     url: "root:root123456@/im"
     database: "im"
     pool_limit: 200
-
 redis:
   url: "redis://127.0.0.1:6379/0"
-
-port: "8000"
+rabbitmq:
+  url: "amqp://guest:guest@localhost:5672/"

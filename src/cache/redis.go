@@ -36,25 +36,25 @@ func NewRedis(config utils.RedisConfig) RedisCache {
 
 // Conn func
 // Please note when you using this function you need to close connections
-func (m *redisCache) Conn() redis.Conn {
-	return m.pool.Get()
+func (r *redisCache) Conn() redis.Conn {
+	return r.pool.Get()
 }
 
 // dialURL func
-func (m *redisCache) dialURL() (redis.Conn, error) {
-	return redis.DialURL(m.config.URL)
+func (r *redisCache) dialURL() (redis.Conn, error) {
+	return redis.DialURL(r.config.URL)
 }
 
 // Keys func
-func (m *redisCache) Keys(pattern string) ([]string, error) {
-	conn := m.Conn()
+func (r *redisCache) Keys(pattern string) ([]string, error) {
+	conn := r.Conn()
 	defer conn.Close()
 	return redis.Strings(conn.Do("KEYS", pattern))
 }
 
 // Set func
-func (m *redisCache) Set(key string, value string, expired int64) error {
-	conn := m.Conn()
+func (r *redisCache) Set(key string, value string, expired int64) error {
+	conn := r.Conn()
 	defer conn.Close()
 
 	var err error
@@ -67,8 +67,8 @@ func (m *redisCache) Set(key string, value string, expired int64) error {
 }
 
 // Get func
-func (m *redisCache) Get(key string) (string, error) {
-	conn := m.Conn()
+func (r *redisCache) Get(key string) (string, error) {
+	conn := r.Conn()
 	defer conn.Close()
 	return redis.String(conn.Do("GET", key))
 }

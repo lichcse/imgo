@@ -1,6 +1,7 @@
 package service
 
 import (
+	"imgo/src/common/identity/v1/dto"
 	"imgo/src/modules/identity/v1/entity"
 	"imgo/src/modules/identity/v1/repository"
 	"imgo/src/utils"
@@ -8,9 +9,9 @@ import (
 
 // UserService interface
 type UserService interface {
-	Add(userAddDto entity.UserAddDTO) error
-	Detail(userID uint64) (entity.UserResponseDTO, error)
-	Update(userID string, user entity.UserEntity) error
+	Add(userAddDTO dto.UserAdd) error
+	Detail(userID uint64) (dto.UserResponse, error)
+	Update(userID string, userUpdateDTO dto.UserUpdate) error
 	Delete(userID string) error
 }
 
@@ -30,34 +31,35 @@ func NewUserService(userRepo repository.UserRepository) UserService {
 }
 
 // Add func
-func (m *userService) Add(userAddDto entity.UserAddDTO) error {
-	hash, _ := m.crypt.Hash(userAddDto.Password)
-	return m.userRepo.Add(entity.UserEntity{
-		FullName: userAddDto.FullName,
-		Username: userAddDto.Username,
-		Email:    userAddDto.Email,
+func (u *userService) Add(userAddDTO dto.UserAdd) error {
+	hash, _ := u.crypt.Hash(userAddDTO.Password)
+
+	return u.userRepo.Add(&entity.User{
+		FullName: userAddDTO.FullName,
+		Username: userAddDTO.Username,
+		Email:    userAddDTO.Email,
 		Password: hash,
 	})
 }
 
 // Detail func
-func (m *userService) Detail(userID uint64) (entity.UserResponseDTO, error) {
-	userResponseDto := entity.UserResponseDTO{}
-	user, err := m.userRepo.Detail(userID)
+func (u *userService) Detail(userID uint64) (dto.UserResponse, error) {
+	userResponseDto := dto.UserResponse{}
+	user, err := u.userRepo.Detail(userID)
 	if err != nil {
-		return userResponseDto, m.convert.DatabaseError(err)
+		return userResponseDto, u.convert.DatabaseError(err)
 	}
 
-	err = m.convert.Object(user, &userResponseDto)
+	err = u.convert.Object(user, &userResponseDto)
 	return userResponseDto, err
 }
 
 // Update func
-func (m *userService) Update(userID string, user entity.UserEntity) error {
-	return m.userRepo.Update(userID, user)
+func (u *userService) Update(userID string, userUpdateDTO dto.UserUpdate) error {
+	return u.userRepo.Update(userID, &entity.User{})
 }
 
 // Delete func
-func (m *userService) Delete(userID string) error {
-	return m.userRepo.Delete(userID)
+func (u *userService) Delete(userID string) error {
+	return u.userRepo.Delete(userID)
 }

@@ -23,22 +23,22 @@ func NewIMLanguage(dataLang map[string]Lang, defaultLang string) IMLanguage {
 }
 
 // SetLanguage func
-func (m *imLanguage) SetLanguage(lang string) {
-	m.currentLang = lang
+func (l *imLanguage) SetLanguage(lang string) {
+	l.currentLang = lang
 }
 
 // SetUnknownMessage func
 // The unknown message will return when it not found in the current or default language.
-func (m *imLanguage) SetUnknownMessage(message string) {
-	m.unknownMessage = message
+func (l *imLanguage) SetUnknownMessage(message string) {
+	l.unknownMessage = message
 }
 
 // GetMessage func
 // This function will return the message with the corresponding code.
-func (m *imLanguage) GetMessage(code string) string {
-	lang, useCurrentLang := m.dataLang[m.currentLang]
+func (l *imLanguage) GetMessage(code string) string {
+	lang, useCurrentLang := l.dataLang[l.currentLang]
 	if !useCurrentLang {
-		lang = m.dataLang[m.defaultLang]
+		lang = l.dataLang[l.defaultLang]
 	}
 
 	if message, ok := lang[code]; ok {
@@ -46,13 +46,13 @@ func (m *imLanguage) GetMessage(code string) string {
 	}
 
 	if !useCurrentLang {
-		return m.unknownMessage
+		return l.unknownMessage
 	}
 
-	if lang, ok := m.dataLang[m.defaultLang]; ok {
+	if lang, ok := l.dataLang[l.defaultLang]; ok {
 		if message, ok := lang[code]; ok {
 			return message
 		}
 	}
-	return m.unknownMessage
+	return l.unknownMessage
 }

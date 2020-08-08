@@ -24,16 +24,16 @@ func NewRestResponse(language utils.IMLanguage, errorMessageMapping CodeMessageM
 	return &rest{language: language, errorMessageMapping: errorMessageMapping}
 }
 
-func (m *rest) Out(ctx *gin.Context, err error, data interface{}) {
-	m.setLang(ctx)
+func (r *rest) Out(ctx *gin.Context, err error, data interface{}) {
+	r.setLang(ctx)
 	result := RestResponse{}
 	result.Code = ""
 	result.Status = RestResponseStatusSuccess
 
 	status := http.StatusOK
 	if err != nil {
-		result.Message = m.language.GetMessage(err.Error())
-		if codeStatus, ok := m.errorMessageMapping[err.Error()]; ok {
+		result.Message = r.language.GetMessage(err.Error())
+		if codeStatus, ok := r.errorMessageMapping[err.Error()]; ok {
 			result.Code = codeStatus.Code
 			status = codeStatus.Status
 		}
@@ -44,6 +44,6 @@ func (m *rest) Out(ctx *gin.Context, err error, data interface{}) {
 	ctx.JSON(status, result)
 }
 
-func (m *rest) setLang(ctx *gin.Context) {
-	m.language.SetLanguage(ctx.DefaultQuery("lang", "en"))
+func (r *rest) setLang(ctx *gin.Context) {
+	r.language.SetLanguage(ctx.DefaultQuery("lang", "en"))
 }

@@ -2,11 +2,11 @@
    - https://github.com/gin-gonic/gin/blob/master/mode.go
    - export GIN_MODE=release
 2. Config
-   - config/development.yaml|etc...
+   - config/dev.yaml|etc...
 3. Database
    - src/database/sql/*
 4. Start
-   - go run main.go dev|test|stg|prod
+   - go run main.go dev|test|stg|prd
 5. Test:
    - go test ./...
 6. Swagger

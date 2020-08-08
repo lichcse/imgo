@@ -27,12 +27,18 @@ type RedisConfig struct {
 	URL string `yaml:"url"`
 }
 
+// RabbitMQConfig struct
+type RabbitMQConfig struct {
+	URL string `yaml:"url"`
+}
+
 // EnvironmentConfig struct
 type EnvironmentConfig struct {
-	Mongo map[string]MongoConfig `yaml:"mongo"`
-	MySQL map[string]MySQLConfig `yaml:"mysql"`
-	Redis RedisConfig            `yaml:"redis"`
-	PORT  string                 `yaml:"port"`
+	Mongo    map[string]MongoConfig `yaml:"mongo"`
+	MySQL    map[string]MySQLConfig `yaml:"mysql"`
+	Redis    RedisConfig            `yaml:"redis"`
+	RabbitMQ RabbitMQConfig         `yaml:"rabbitmq"`
+	PORT     string                 `yaml:"port"`
 }
 
 // IMConfig interface
@@ -43,17 +49,18 @@ type IMConfig interface {
 	MongoItem(db string) MongoConfig
 	MySQL() map[string]MySQLConfig
 	MySQLItem(db string) MySQLConfig
+	RabbitMQ() RabbitMQConfig
 }
 
 type imConfig struct{}
 
 var cfg = EnvironmentConfig{}
 var cfgMapping = map[string]string{
+	"dev":       "dev.yaml",
+	"stg":       "stg.yaml",
+	"prd":       "prd.yaml",
+	"default":   "dev.yaml",
 	"test":      "test.yaml",
-	"dev":       "development.yaml",
-	"stg":       "staging.yaml",
-	"prod":      "production.yaml",
-	"default":   "development.yaml",
 	"unit_test": "unit_test.yaml",
 }
 
@@ -63,7 +70,7 @@ func NewIMConfig() IMConfig {
 }
 
 // Load func
-func (m *imConfig) Load(args []string) error {
+func (c *imConfig) Load(args []string) error {
 	if len(args) < 1 {
 		return errors.New("")
 	}
@@ -83,7 +90,7 @@ func (m *imConfig) Load(args []string) error {
 }
 
 // GetPort func
-func (m *imConfig) GetPort() string {
+func (c *imConfig) GetPort() string {
 	if len(cfg.PORT) <= 0 {
 		return ":8080"
 	}
@@ -92,12 +99,12 @@ func (m *imConfig) GetPort() string {
 }
 
 // Mongo func
-func (m *imConfig) Mongo() map[string]MongoConfig {
+func (c *imConfig) Mongo() map[string]MongoConfig {
 	return cfg.Mongo
 }
 
 // MongoItem func
-func (m *imConfig) MongoItem(db string) MongoConfig {
+func (c *imConfig) MongoItem(db string) MongoConfig {
 	if dbInfo, ok := cfg.Mongo[db]; ok {
 		return dbInfo
 	}
@@ -106,15 +113,20 @@ func (m *imConfig) MongoItem(db string) MongoConfig {
 }
 
 // MySQL func
-func (m *imConfig) MySQL() map[string]MySQLConfig {
+func (c *imConfig) MySQL() map[string]MySQLConfig {
 	return cfg.MySQL
 }
 
 // MySQLItem func
-func (m *imConfig) MySQLItem(db string) MySQLConfig {
+func (c *imConfig) MySQLItem(db string) MySQLConfig {
 	if dbInfo, ok := cfg.MySQL[db]; ok {
 		return dbInfo
 	}
 
 	return MySQLConfig{}
+}
+
+// RabbitMQ func
+func (c *imConfig) RabbitMQ() RabbitMQConfig {
+	return cfg.RabbitMQ
 }

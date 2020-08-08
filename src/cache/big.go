@@ -65,8 +65,8 @@ func NewBigCache() BigCache {
 }
 
 // Get func
-func (m *bigCache) Get(key string) (string, error) {
-	value, err := m.cache.Get(key)
+func (b *bigCache) Get(key string) (string, error) {
+	value, err := b.cache.Get(key)
 	if err != nil {
 		return "", err
 	}
@@ -74,6 +74,6 @@ func (m *bigCache) Get(key string) (string, error) {
 }
 
 // Set func
-func (m *bigCache) Set(key string, value string) error {
-	return m.cache.Set(key, []byte(value))
+func (b *bigCache) Set(key string, value string) error {
+	return b.cache.Set(key, []byte(value))
 }

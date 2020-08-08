@@ -1,53 +1,56 @@
 package repository
 
 import (
-	"imgo/src/database"
 	"imgo/src/modules/identity/v1/entity"
 	"imgo/src/modules/identity/v1/resource"
 	"imgo/src/utils"
+
+	"github.com/jinzhu/gorm"
 )
 
 // UserRepository interface
 type UserRepository interface {
-	Add(userEntity entity.UserEntity) error
-	Detail(userID uint64) (entity.UserEntity, error)
-	Update(userID string, user entity.UserEntity) error
+	Add(userEntity *entity.User) error
+	Detail(userID uint64) (entity.User, error)
+	Update(userID string, user *entity.User) error
 	Delete(userID string) error
 }
 
 type userRepository struct {
-	db     database.SQLDb
+	db     *gorm.DB
 	imTime utils.IMTime
 }
 
 // NewUserRepository func
-func NewUserRepository(db database.SQLDb) UserRepository {
+func NewUserRepository(db *gorm.DB) UserRepository {
 	return &userRepository{db: db, imTime: utils.NewIMTime()}
 }
 
 // Add func
-func (m *userRepository) Add(userEntity entity.UserEntity) error {
-	userEntity.Status = resource.UserStatusDefault
-	userEntity.CreatedAt = m.imTime.TimeDB()
-	userEntity.ModifiedAt = m.imTime.TimeDB()
-	_, err := m.db.Exec("INSERT INTO im_user (full_name, username, email, password, created_at, modified_at, status) VALUE (?, ?, ?, ?, ?, ?, ?)", userEntity.FullName, userEntity.Username, userEntity.Email, userEntity.Password, userEntity.CreatedAt, userEntity.ModifiedAt, userEntity.Status)
+func (u *userRepository) Add(user *entity.User) error {
+	user.Status = resource.UserStatusDefault
+	user.CreatedAt = u.imTime.TimeDB()
+	user.ModifiedAt = u.imTime.TimeDB()
+	err := u.db.Create(&user).Error
+	if err != nil {
+		return err
+	}
 	return err
 }
 
 // Detail func
-func (m *userRepository) Detail(userID uint64) (entity.UserEntity, error) {
-	result := entity.UserEntity{}
-	row := m.db.QueryRow("SELECT * FROM im_user WHERE id=?", userID)
-	err := row.Scan(&result.ID, &result.FullName, &result.Username, &result.Email, &result.Password, &result.CreatedAt, &result.ModifiedAt, &result.Status)
+func (u *userRepository) Detail(userID uint64) (entity.User, error) {
+	result := entity.User{}
+	err := u.db.Where("id = ?", userID).First(&result).Error
 	return result, err
 }
 
 // Update func
-func (m *userRepository) Update(userID string, user entity.UserEntity) error {
+func (u *userRepository) Update(userID string, user *entity.User) error {
 	return nil
 }
 
 // Delete func
-func (m *userRepository) Delete(userID string) error {
+func (u *userRepository) Delete(userID string) error {
 	return nil
 }

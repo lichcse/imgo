@@ -16,13 +16,13 @@ func NewIMValidation() IMValidation {
 }
 
 // IsValidEmail func
-func (m *imValidate) IsValidEmail(str string) bool {
+func (v *imValidate) IsValidEmail(str string) bool {
 	var validID = regexp.MustCompile("^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$")
 	return validID.MatchString(str)
 }
 
 // IsValidUsername func
-func (m *imValidate) IsValidUsername(str string) bool {
+func (v *imValidate) IsValidUsername(str string) bool {
 	var validID = regexp.MustCompile("^[a-zA-Z0-9]+(?:-[a-zA-Z0-9]+)*$")
 	return validID.MatchString(str)
 }

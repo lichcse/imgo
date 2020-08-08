@@ -2,10 +2,10 @@ package routes
 
 import (
 	"imgo/docs"
-	"imgo/src/database"
 	v1 "imgo/src/routes/v1"
 
 	"github.com/gin-gonic/gin"
+	"github.com/jinzhu/gorm"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
@@ -13,7 +13,7 @@ import (
 var r = gin.Default()
 
 // SetupRouter : router
-func SetupRouter(db database.SQLDb) *gin.Engine {
+func SetupRouter(db *gorm.DB) *gin.Engine {
 	identityModule(db)
 
 	docs.SwaggerInfo.Schemes = []string{"http", "https"}
@@ -22,7 +22,7 @@ func SetupRouter(db database.SQLDb) *gin.Engine {
 }
 
 // identity
-func identityModule(db database.SQLDb) {
+func identityModule(db *gorm.DB) {
 	iV1 := r.Group("/identity/v1")
 	{
 		v1.UserRoute(iV1, db)

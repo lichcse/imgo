@@ -16,13 +16,13 @@ func NewIMCrypt() IMCrypt {
 }
 
 // Hash func
-func (m *imCrypt) Hash(str string) (string, error) {
+func (c *imCrypt) Hash(str string) (string, error) {
 	bytes, err := bcrypt.GenerateFromPassword([]byte(str), bcrypt.DefaultCost)
 	return string(bytes), err
 }
 
 // CheckHash func
-func (m *imCrypt) CheckHash(str, hash string) bool {
+func (c *imCrypt) CheckHash(str, hash string) bool {
 	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(str))
 	return err == nil
 }

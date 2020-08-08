@@ -2,13 +2,13 @@ package validation
 
 import (
 	"errors"
-	"imgo/src/modules/identity/v1/entity"
+	"imgo/src/common/identity/v1/dto"
 	"imgo/src/utils"
 )
 
 // UserValidation func
 type UserValidation interface {
-	Add(userAddDto entity.UserAddDTO) error
+	Add(userAdd dto.UserAdd) error
 }
 
 type userValidation struct {
@@ -21,23 +21,23 @@ func NewUserValidation() UserValidation {
 }
 
 // Add func
-func (m *userValidation) Add(userAddDto entity.UserAddDTO) error {
+func (u *userValidation) Add(userAdd dto.UserAdd) error {
 
-	if len(userAddDto.FullName) < 3 || len(userAddDto.FullName) > 50 {
+	if len(userAdd.FullName) < 3 || len(userAdd.FullName) > 50 {
 		return errors.New("invalid_full_name")
 	}
 
-	validUsername := m.validation.IsValidUsername(userAddDto.Username)
+	validUsername := u.validation.IsValidUsername(userAdd.Username)
 	if !validUsername {
 		return errors.New("invalid_username")
 	}
 
-	validEmail := m.validation.IsValidEmail(userAddDto.Email)
+	validEmail := u.validation.IsValidEmail(userAdd.Email)
 	if !validEmail {
 		return errors.New("invalid_email")
 	}
 
-	if len(userAddDto.Password) == 0 {
+	if len(userAdd.Password) == 0 {
 		return errors.New("invalid_password")
 	}
 	return nil

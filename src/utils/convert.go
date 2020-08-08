@@ -19,7 +19,7 @@ func NewIMConvert() IMConvert {
 }
 
 // Object func
-func (m *imConvert) Object(source interface{}, destination interface{}) error {
+func (c *imConvert) Object(source interface{}, destination interface{}) error {
 	byteConvert, err := json.Marshal(source)
 	if err != nil {
 		return err
@@ -30,7 +30,7 @@ func (m *imConvert) Object(source interface{}, destination interface{}) error {
 }
 
 // DatabaseError func
-func (m *imConvert) DatabaseError(err error) error {
+func (c *imConvert) DatabaseError(err error) error {
 	if err == nil {
 		return errors.New("undefined")
 	}
