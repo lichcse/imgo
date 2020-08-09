@@ -17,9 +17,10 @@ type MongoConfig struct {
 
 // MySQLConfig struct
 type MySQLConfig struct {
-	URL       string `yaml:"url"`
-	Database  string `yaml:"database"`
-	PoolLimit int    `yaml:"pool_limit"`
+	URL         string `yaml:"url"`
+	Database    string `yaml:"database"`
+	PoolLimit   int    `yaml:"pool_limit"`
+	MaxLifetime int    `yaml:"max_life_time"`
 }
 
 // RedisConfig struct

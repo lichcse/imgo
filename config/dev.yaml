@@ -9,6 +9,7 @@ mysql:
     url: "root:root123456@/im?charset=utf8&parseTime=True&loc=Local"
     database: "im"
     pool_limit: 200
+    max_life_time: 10
 redis:
   url: "redis://127.0.0.1:6379/0"
 rabbitmq:
