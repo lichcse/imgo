@@ -36,6 +36,8 @@ func (c *imConvert) DatabaseError(err error) error {
 	}
 
 	switch err.Error() {
+	case "record not found":
+		return errors.New("not_found")
 	case "sql: no rows in result set":
 		return errors.New("not_found")
 	default:
