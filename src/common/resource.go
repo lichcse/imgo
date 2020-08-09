@@ -80,13 +80,13 @@ func (r *imResource) MySQLConn() (*gorm.DB, error) {
 
 	sqlConfig := resource.config.MySQLItem("im")
 	conn, err := gorm.Open("mysql", sqlConfig.URL)
-	conn.DB().SetMaxOpenConns(sqlConfig.PoolLimit)
-	conn.DB().SetMaxIdleConns(sqlConfig.PoolLimit)
-	conn.DB().SetConnMaxLifetime(time.Duration(sqlConfig.MaxLifetime) * time.Minute)
 	if err != nil {
 		return nil, err
 	}
 
+	conn.DB().SetMaxOpenConns(sqlConfig.PoolLimit)
+	conn.DB().SetMaxIdleConns(sqlConfig.PoolLimit)
+	conn.DB().SetConnMaxLifetime(time.Duration(sqlConfig.MaxLifetime) * time.Minute)
 	resource.mySQL = conn
 	return conn, nil
 }
