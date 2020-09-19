@@ -29,17 +29,19 @@ func (r *rest) Out(ctx *gin.Context, err error, data interface{}) {
 	result := RestResponse{}
 	result.Code = ""
 	result.Status = RestResponseStatusSuccess
-
+	code := ""
 	status := http.StatusOK
-	if err != nil {
-		result.Message = r.language.GetMessage(err.Error())
-		if codeStatus, ok := r.errorMessageMapping[err.Error()]; ok {
-			result.Code = codeStatus.Code
-			status = codeStatus.Status
-		}
-		result.Status = RestResponseStatusFail
-	} else {
+	if err == nil {
+		code = "success"
 		result.Data = data
+	} else {
+		code = err.Error()
+		result.Status = RestResponseStatusFail
+	}
+	result.Message = r.language.GetMessage(code)
+	if codeStatus, ok := r.errorMessageMapping[code]; ok {
+		result.Code = codeStatus.Code
+		status = codeStatus.Status
 	}
 	ctx.JSON(status, result)
 }

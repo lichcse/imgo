@@ -12,9 +12,6 @@ func TestIMConfig_Load(t *testing.T) {
 	err := imConfig.Load([]string{})
 	NotEqual(t, nil, err)
 
-	err = imConfig.Load([]string{""})
-	NotEqual(t, nil, err)
-
 	err = imConfig.Load([]string{"test"})
 	Equal(t, nil, err)
 }

@@ -8,25 +8,25 @@ import (
 )
 
 func TestUserValidation_Add(t *testing.T) {
-	user := dto.UserAdd{}
+	userAddRequest := &dto.UserAddRequest{}
 	userValidation := NewUserValidation()
-	user.FullName = ""
-	err := userValidation.Add(user)
-	assert.Equal(t, "invalid_full_name", err.Error())
+	userAddRequest.FullName = ""
+	err := userValidation.Add(userAddRequest)
+	assert.Equal(t, "user_invalid_full_name", err.Error())
 
-	user.FullName = "Test"
-	err = userValidation.Add(user)
-	assert.Equal(t, "invalid_username", err.Error())
+	userAddRequest.FullName = "Test"
+	err = userValidation.Add(userAddRequest)
+	assert.Equal(t, "user_invalid_username", err.Error())
 
-	user.Username = "test"
-	err = userValidation.Add(user)
-	assert.Equal(t, "invalid_email", err.Error())
+	userAddRequest.Username = "test"
+	err = userValidation.Add(userAddRequest)
+	assert.Equal(t, "user_invalid_email", err.Error())
 
-	user.Email = "example@example.com"
-	err = userValidation.Add(user)
-	assert.Equal(t, "invalid_password", err.Error())
+	userAddRequest.Email = "example@example.com"
+	err = userValidation.Add(userAddRequest)
+	assert.Equal(t, "user_invalid_password", err.Error())
 
-	user.Password = "123456789"
-	err = userValidation.Add(user)
+	userAddRequest.Password = "123456789"
+	err = userValidation.Add(userAddRequest)
 	assert.Equal(t, nil, err)
 }

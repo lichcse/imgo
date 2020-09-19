@@ -1,38 +1,19 @@
 package repository
 
 import (
-	"database/sql"
 	"errors"
 	"testing"
 
 	"imgo/src/modules/identity/v1/entity"
 
 	"github.com/DATA-DOG/go-sqlmock"
-	"github.com/jinzhu/gorm"
 
 	// mysql driver
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/stretchr/testify/assert"
 )
 
-func UserInit(t *testing.T) (*sql.DB, sqlmock.Sqlmock, *gorm.DB) {
-	mockDB, mock, err := sqlmock.New()
-	if err != nil {
-		assert.Equal(t, "TestUser - error sqlmock", err.Error())
-	}
-	db, err := gorm.Open("mysql", mockDB)
-	if err != nil {
-		assert.Equal(t, "TestUser - error gorm", err.Error())
-	}
-
-	return mockDB, mock, db
-}
-
-func TestUser_Add_Fail(t *testing.T) {
-	mockDB, mock, db := UserInit(t)
-	defer mockDB.Close()
-	defer db.Close()
-
+func UserRepositoryPrepareDataTest() entity.User {
 	user := entity.User{
 		Email:    "example@example.com",
 		FullName: "Test",
@@ -40,6 +21,16 @@ func TestUser_Add_Fail(t *testing.T) {
 		Password: "123456789",
 		Status:   0,
 	}
+	return user
+}
+
+func TestUserRepository_Add_Fail(t *testing.T) {
+	mockDB, mock, db := MockDB(t)
+	defer mockDB.Close()
+	defer db.Close()
+
+	user := UserRepositoryPrepareDataTest()
+
 	userRepository := NewUserRepository(db)
 	mock.ExpectBegin()
 	mock.ExpectExec("^INSERT*").WillReturnError(errors.New("Test"))
@@ -48,18 +39,12 @@ func TestUser_Add_Fail(t *testing.T) {
 	assert.Equal(t, "Test", err.Error())
 }
 
-func TestUser_Add_Success(t *testing.T) {
-	mockDB, mock, db := UserInit(t)
+func TestUserRepository_Add_Success(t *testing.T) {
+	mockDB, mock, db := MockDB(t)
 	defer mockDB.Close()
 	defer db.Close()
 
-	user := entity.User{
-		Email:    "example@example.com",
-		FullName: "Test",
-		Username: "example",
-		Password: "123456789",
-		Status:   0,
-	}
+	user := UserRepositoryPrepareDataTest()
 	userRepository := NewUserRepository(db)
 	// success
 	mock.ExpectBegin()
@@ -70,8 +55,8 @@ func TestUser_Add_Success(t *testing.T) {
 	assert.Equal(t, uint64(1), user.ID)
 }
 
-func TestUser_Detail(t *testing.T) {
-	mockDB, mock, db := UserInit(t)
+func TestUserRepository_Detail(t *testing.T) {
+	mockDB, mock, db := MockDB(t)
 	defer mockDB.Close()
 	defer db.Close()
 	userRepository := NewUserRepository(db)

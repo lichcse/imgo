@@ -35,7 +35,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/dto.UserAdd"
+                            "$ref": "#/definitions/dto.UserAddRequest"
                         }
                     }
                 ],
@@ -43,13 +43,13 @@
                     "200": {
                         "description": "success",
                         "schema": {
-                            "$ref": "#/definitions/dto.UserResponse"
+                            "$ref": "#/definitions/dto.UserDetailResponse"
                         }
                     }
                 }
             }
         },
-        "/identity/v1/user/{user_id}": {
+        "/identity/v1/user/{id}": {
             "get": {
                 "description": "Author: LichTV",
                 "consumes": [
@@ -76,7 +76,7 @@
                     {
                         "type": "integer",
                         "description": "number",
-                        "name": "user_id",
+                        "name": "id",
                         "in": "path",
                         "required": true
                     }
@@ -85,7 +85,7 @@
                     "200": {
                         "description": "success",
                         "schema": {
-                            "$ref": "#/definitions/dto.UserResponse"
+                            "$ref": "#/definitions/dto.UserDetailResponse"
                         }
                     }
                 }
@@ -93,7 +93,7 @@
         }
     },
     "definitions": {
-        "dto.UserAdd": {
+        "dto.UserAddRequest": {
             "type": "object",
             "properties": {
                 "email": {
@@ -116,7 +116,7 @@
                 }
             }
         },
-        "dto.UserResponse": {
+        "dto.UserDetailResponse": {
             "type": "object",
             "properties": {
                 "created_at": {

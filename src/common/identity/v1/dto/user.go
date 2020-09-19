@@ -1,35 +1,35 @@
 package dto
 
-// UserAdd user add input
-type UserAdd struct {
+// UserAddRequest user add request
+type UserAddRequest struct {
 	FullName string `json:"full_name" swaggertype:"string" maxLength:"3" maxLength:"50" example:"Lich Truong"`
 	Username string `json:"username" swaggertype:"string" format:"^[a-zA-Z0-9]+(?:-[a-zA-Z0-9]+)*$" example:"lichtv"`
 	Email    string `json:"email" swaggertype:"string" example:"example@imgo.com"`
 	Password string `json:"password" swaggertype:"string" example:"W3^&(80)&&^x"`
 }
 
-// UserUpdate user update input
-type UserUpdate struct {
+// UserUpdateRequest user update request
+type UserUpdateRequest struct {
 	FullName string `json:"full_name" swaggertype:"string" maxLength:"3" maxLength:"50" example:"Lich Truong"`
 	Username string `json:"username" swaggertype:"string" format:"^[a-zA-Z0-9]+(?:-[a-zA-Z0-9]+)*$" example:"lichtv"`
 	Email    string `json:"email" swaggertype:"string" example:"example@imgo.com"`
 	Password string `json:"password" swaggertype:"string" example:"W3^&(80)&&^x"`
 }
 
-// UserInputConfirm user input confirm
-type UserInputConfirm struct {
+// UserConfirmRequest user confirm request
+type UserConfirmRequest struct {
 	Code string `json:"code"`
 	Type string `json:"type"`
 }
 
-// UserInputChangePassword user input change password
-type UserInputChangePassword struct {
+// UserChangePasswordRequest user change password request
+type UserChangePasswordRequest struct {
 	OldPassword string `json:"old_password"`
 	NewPassword string `json:"new_password"`
 }
 
-// UserResponse user response
-type UserResponse struct {
+// UserDetailResponse user response
+type UserDetailResponse struct {
 	ID         uint64 `json:"id" swaggertype:"integer" example:"1"`
 	FullName   string `json:"full_name" swaggertype:"string" example:"Lich Truong"`
 	Username   string `json:"username" swaggertype:"string" example:"lichtv"`

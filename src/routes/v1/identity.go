@@ -21,7 +21,7 @@ func UserRoute(r *gin.RouterGroup, db *gorm.DB) {
 	userRepository := repository.NewUserRepository(db)
 	userHandler := http.NewUserHandler(service.NewUserService(userRepository), res)
 	r.POST("/user", userHandler.Add)
-	r.GET("/user/:user_id", userHandler.Detail)
-	r.PUT("/user/:user_id", userHandler.Update)
-	r.DELETE("/user/:user_id", userHandler.Delete)
+	r.GET("/user/:id", userHandler.Detail)
+	r.PUT("/user/:id", userHandler.Update)
+	r.DELETE("/user/:id", userHandler.Delete)
 }

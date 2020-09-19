@@ -4,6 +4,8 @@ import (
 	"errors"
 	"fmt"
 	"io/ioutil"
+	"runtime"
+	"strings"
 
 	yaml "gopkg.in/yaml.v2"
 )
@@ -53,7 +55,9 @@ type IMConfig interface {
 	RabbitMQ() RabbitMQConfig
 }
 
-type imConfig struct{}
+type imConfig struct {
+	projectName string
+}
 
 var cfg = EnvironmentConfig{}
 var cfgMapping = map[string]string{
@@ -67,7 +71,7 @@ var cfgMapping = map[string]string{
 
 // NewIMConfig func
 func NewIMConfig() IMConfig {
-	return &imConfig{}
+	return &imConfig{projectName: "imgo"}
 }
 
 // Load func
@@ -81,7 +85,10 @@ func (c *imConfig) Load(args []string) error {
 		env = cfgMapping["default"]
 	}
 
-	configData, err := ioutil.ReadFile("./config/" + env)
+	_, filename, _, _ := runtime.Caller(0)
+	ddd := strings.Split(filename, c.projectName)
+
+	configData, err := ioutil.ReadFile(ddd[0] + c.projectName + "/config/" + env)
 	if err != nil {
 		return err
 	}

@@ -11,62 +11,55 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestUserService_Add(t *testing.T) {
-	userAddDTO := dto.UserAdd{
+func UserServicePrepareDataTest() (*dto.UserAddRequest, *entity.User) {
+	userAddRequest := &dto.UserAddRequest{
 		FullName: "Test",
 		Username: "test",
 		Email:    "example@example.com",
 		Password: "123456789",
 	}
 
-	userEntity := entity.User{
-		FullName: userAddDTO.FullName,
-		Username: userAddDTO.Username,
-		Email:    userAddDTO.Email,
+	user := &entity.User{
+		FullName: userAddRequest.FullName,
+		Username: userAddRequest.Username,
+		Email:    userAddRequest.Email,
 		Password: "",
 	}
 
+	return userAddRequest, user
+}
+
+func TestUserService_Add(t *testing.T) {
+	userAddRequest, user := UserServicePrepareDataTest()
 	// fail
 	userRepository := new(repository.UserRepositoryMock)
 	userService := NewUserService(userRepository)
-	userRepository.On("Add", &userEntity).Return(errors.New("Test"))
-	err := userService.Add(userAddDTO)
-	assert.Equal(t, "Test", err.Error())
+	userRepository.On("Add", user).Return(errors.New("Add-Error"))
+	_, err := userService.Add(userAddRequest)
+	assert.Equal(t, "Add-Error", err.Error())
 
 	// success
 	userRepository = new(repository.UserRepositoryMock)
 	userService = NewUserService(userRepository)
-	userRepository.On("Add", &userEntity).Return(nil)
-	err = userService.Add(userAddDTO)
+	userRepository.On("Add", user).Return(nil)
+	_, err = userService.Add(userAddRequest)
 	assert.Equal(t, nil, err)
 }
 
 func TestUserService_Detail(t *testing.T) {
-	userAddDTO := dto.UserResponse{
-		FullName: "Test",
-		Username: "test",
-		Email:    "example@example.com",
-	}
-
-	userEntity := entity.User{
-		FullName: userAddDTO.FullName,
-		Username: userAddDTO.Username,
-		Email:    userAddDTO.Email,
-		Password: "",
-	}
-
+	userAddRequest, user := UserServicePrepareDataTest()
 	// fail
 	userRepository := new(repository.UserRepositoryMock)
 	userService := NewUserService(userRepository)
-	userRepository.On("Detail", uint64(1)).Return(userEntity, errors.New("undefined"))
+	userRepository.On("Detail", uint64(1)).Return(user, errors.New("undefined"))
 	_, err := userService.Detail(uint64(1))
 	assert.Equal(t, "undefined", err.Error())
 
 	// success
 	userRepository = new(repository.UserRepositoryMock)
 	userService = NewUserService(userRepository)
-	userRepository.On("Detail", uint64(1)).Return(userEntity, nil)
-	user, err := userService.Detail(uint64(1))
+	userRepository.On("Detail", uint64(1)).Return(user, nil)
+	userDetailResponse, err := userService.Detail(uint64(1))
 	assert.Equal(t, nil, err)
-	assert.Equal(t, "Test", user.FullName)
+	assert.Equal(t, userAddRequest.FullName, userDetailResponse.FullName)
 }

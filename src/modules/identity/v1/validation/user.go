@@ -8,7 +8,7 @@ import (
 
 // UserValidation func
 type UserValidation interface {
-	Add(userAdd dto.UserAdd) error
+	Add(userAdd *dto.UserAddRequest) error
 }
 
 type userValidation struct {
@@ -21,24 +21,24 @@ func NewUserValidation() UserValidation {
 }
 
 // Add func
-func (u *userValidation) Add(userAdd dto.UserAdd) error {
+func (u *userValidation) Add(userAddRequest *dto.UserAddRequest) error {
 
-	if len(userAdd.FullName) < 3 || len(userAdd.FullName) > 50 {
-		return errors.New("invalid_full_name")
+	if len(userAddRequest.FullName) < 3 || len(userAddRequest.FullName) > 50 {
+		return errors.New("user_invalid_full_name")
 	}
 
-	validUsername := u.validation.IsValidUsername(userAdd.Username)
+	validUsername := u.validation.IsValidUsername(userAddRequest.Username)
 	if !validUsername {
-		return errors.New("invalid_username")
+		return errors.New("user_invalid_username")
 	}
 
-	validEmail := u.validation.IsValidEmail(userAdd.Email)
+	validEmail := u.validation.IsValidEmail(userAddRequest.Email)
 	if !validEmail {
-		return errors.New("invalid_email")
+		return errors.New("user_invalid_email")
 	}
 
-	if len(userAdd.Password) == 0 {
-		return errors.New("invalid_password")
+	if len(userAddRequest.Password) == 0 {
+		return errors.New("user_invalid_password")
 	}
 	return nil
 }

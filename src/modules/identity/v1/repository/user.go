@@ -10,10 +10,10 @@ import (
 
 // UserRepository interface
 type UserRepository interface {
-	Add(userEntity *entity.User) error
-	Detail(userID uint64) (entity.User, error)
-	Update(userID string, user *entity.User) error
-	Delete(userID string) error
+	Add(user *entity.User) error
+	Detail(id uint64) (*entity.User, error)
+	Update(id string, user *entity.User) error
+	Delete(id string) error
 }
 
 type userRepository struct {
@@ -31,26 +31,25 @@ func (u *userRepository) Add(user *entity.User) error {
 	user.Status = resource.UserStatusDefault
 	user.CreatedAt = u.imTime.TimeDB()
 	user.ModifiedAt = u.imTime.TimeDB()
-	err := u.db.Create(&user).Error
-	if err != nil {
-		return err
-	}
-	return err
+	return u.db.Create(&user).Error
 }
 
 // Detail func
-func (u *userRepository) Detail(userID uint64) (entity.User, error) {
-	result := entity.User{}
-	err := u.db.Where("id = ?", userID).First(&result).Error
+func (u *userRepository) Detail(id uint64) (*entity.User, error) {
+	result := &entity.User{}
+	err := u.db.Where("id = ?", id).First(result).Error
 	return result, err
 }
 
 // Update func
-func (u *userRepository) Update(userID string, user *entity.User) error {
+func (u *userRepository) Update(id string, user *entity.User) error {
+	// TODO
+	user.ModifiedAt = u.imTime.TimeDB()
 	return nil
 }
 
 // Delete func
-func (u *userRepository) Delete(userID string) error {
+func (u *userRepository) Delete(id string) error {
+	// TODO
 	return nil
 }

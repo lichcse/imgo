@@ -37,26 +37,29 @@ func NewUserHandler(
 // @Accept json
 // @Produce json
 // @Param lang query string false "string" enums(en, vi)
-// @Param UserAddDTO body dto.UserAdd true "Add a new user body"
-// @Success 200 {object} dto.UserResponse "success"
+// @Param UserAddDTO body dto.UserAddRequest true "Add a new user body"
+// @Success 200 {object} dto.UserDetailResponse "success"
 // @Router /identity/v1/user [post]
 func (u *UserHandler) Add(ctx *gin.Context) {
-	userAddDTO := dto.UserAdd{}
-	err := ctx.BindJSON(&userAddDTO)
+	userAddRequest := &dto.UserAddRequest{}
+	err := ctx.BindJSON(userAddRequest)
 	if err != nil {
 		u.response.Out(ctx, errors.New("not_allow"), nil)
 		return
 	}
 
-	err = u.userValidation.Add(userAddDTO)
+	err = u.userValidation.Add(userAddRequest)
 	if err != nil {
 		u.response.Out(ctx, err, nil)
 		return
 	}
 
-	err = u.userService.Add(userAddDTO)
-	u.response.Out(ctx, err, nil)
-	return
+	userDetailResponse, err := u.userService.Add(userAddRequest)
+	if err != nil {
+		u.response.Out(ctx, err, nil)
+		return
+	}
+	u.response.Out(ctx, err, userDetailResponse)
 }
 
 // Detail func godoc
@@ -66,19 +69,18 @@ func (u *UserHandler) Add(ctx *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param lang query string false "string" enums(en, vi)
-// @Param user_id path int true "number"
-// @Success 200 {object} dto.UserResponse "success"
-// @Router /identity/v1/user/{user_id} [get]
+// @Param id path int true "number"
+// @Success 200 {object} dto.UserDetailResponse "success"
+// @Router /identity/v1/user/{id} [get]
 func (u *UserHandler) Detail(ctx *gin.Context) {
-	userIDStr := ctx.Param("user_id")
-	userID, err := strconv.ParseInt(userIDStr, 10, 32)
-	if err != nil {
+	id, err := strconv.Atoi(ctx.Param("id"))
+	if err != nil || id == 0 {
 		u.response.Out(ctx, errors.New("not_allow"), nil)
 		return
 	}
 
-	user, err := u.userService.Detail(uint64(userID))
-	u.response.Out(ctx, err, user)
+	userDetailResponse, err := u.userService.Detail(uint64(id))
+	u.response.Out(ctx, err, userDetailResponse)
 	return
 }
 

@@ -12,7 +12,7 @@ type UserValidationMock struct {
 }
 
 // Add func
-func (r *UserValidationMock) Add(userAdd dto.UserAdd) error {
-	args := r.Called(userAdd)
+func (r *UserValidationMock) Add(userAddRequest *dto.UserAddRequest) error {
+	args := r.Called(userAddRequest)
 	return args.Error(0)
 }
