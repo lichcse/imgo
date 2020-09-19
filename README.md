@@ -1,15 +1,12 @@
-1. MODE:
-   - https://github.com/gin-gonic/gin/blob/master/mode.go
-   - export GIN_MODE=release
-2. Config
-   - config/dev.yaml|etc...
-3. Database
-   - src/database/sql/*
-4. Start
-   - go run main.go dev|test|stg|prd
-5. Test:
-   - go test ./...
-6. Swagger
-   - swag init & restart server
-   - http://localhost:8080/swagger/docs/index.html
-   - ref: https://github.com/swaggo/swag
+# Simple project template
+## Overview
+This is a simple project template with Go.
+## Quick start
+* Download or clone template project
+* Config environment file `config/dev.yaml`
+* Start server `go run main.go dev` or `make`
+* Using swagger test api `http://localhost:{{PORT}}/swagger/docs/index.html`
+## Common command
+* Start server: `go run main.go dev|test|stg|prd`
+* Unit test: `go test ./...` or `make dev-unit-test`
+* Check  convention: `find . -type d | xargs -L 1 golint` or `make dev-check-convention`

@@ -9,7 +9,7 @@
             "type": "go",
             "request": "launch",
             "mode": "auto",
-            "program": "/Users/lichtv/workspace/go/src/imgo/main.go",
+            "program": "/Users/lichtv/workspace/go/app/imgo/main.go",
             "env": {},
             "args": ["dev"]
         }

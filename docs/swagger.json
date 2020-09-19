@@ -31,7 +31,7 @@
                     },
                     {
                         "description": "Add a new user body",
-                        "name": "UserAddDTO",
+                        "name": "UserAddRequest",
                         "in": "body",
                         "required": true,
                         "schema": {

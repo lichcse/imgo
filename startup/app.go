@@ -1,10 +1,10 @@
 package startup
 
 import (
-	"imgo/src/routes"
-	"imgo/src/utils"
+	"imgo/app/routes"
+	"imgo/app/utils"
 
-	"imgo/src/common"
+	"imgo/app/common"
 
 	// mysql driver
 	_ "github.com/go-sql-driver/mysql"

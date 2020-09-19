@@ -59,7 +59,7 @@ paths:
         type: string
       - description: Add a new user body
         in: body
-        name: UserAddDTO
+        name: UserAddRequest
         required: true
         schema:
           $ref: '#/definitions/dto.UserAddRequest'
