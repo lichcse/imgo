@@ -2,8 +2,8 @@ package service
 
 import (
 	"errors"
-	"imgo/app/common/identity/v1/dto"
 	"imgo/app/modules/identity/v1/repository"
+	schema "imgo/app/schema/identity/v1"
 	"testing"
 
 	"imgo/app/modules/identity/v1/entity"
@@ -11,8 +11,8 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func UserServicePrepareDataTest() (*dto.UserAddRequest, *entity.User) {
-	userAddRequest := &dto.UserAddRequest{
+func UserServicePrepareDataTest() (*schema.UserAddRequest, *entity.User) {
+	userAddRequest := &schema.UserAddRequest{
 		FullName: "Test",
 		Username: "test",
 		Email:    "example@example.com",
@@ -29,35 +29,37 @@ func UserServicePrepareDataTest() (*dto.UserAddRequest, *entity.User) {
 	return userAddRequest, user
 }
 
-func TestUserService_Add(t *testing.T) {
+func TestUserService_Add_Fail(t *testing.T) {
 	userAddRequest, user := UserServicePrepareDataTest()
-	// fail
 	userRepository := new(repository.UserRepositoryMock)
 	userService := NewUserService(userRepository)
-	userRepository.On("Add", user).Return(errors.New("Add-Error"))
+	userRepository.On("Add", user).Return(errors.New("Add_Fail"))
 	_, err := userService.Add(userAddRequest)
-	assert.Equal(t, "Add-Error", err.Error())
+	assert.Equal(t, "Add_Fail", err.Error())
+}
 
-	// success
-	userRepository = new(repository.UserRepositoryMock)
-	userService = NewUserService(userRepository)
+func TestUserService_Add_Success(t *testing.T) {
+	userAddRequest, user := UserServicePrepareDataTest()
+	userRepository := new(repository.UserRepositoryMock)
+	userService := NewUserService(userRepository)
 	userRepository.On("Add", user).Return(nil)
-	_, err = userService.Add(userAddRequest)
+	_, err := userService.Add(userAddRequest)
 	assert.Equal(t, nil, err)
 }
 
-func TestUserService_Detail(t *testing.T) {
-	userAddRequest, user := UserServicePrepareDataTest()
-	// fail
+func TestUserService_Detail_Fail(t *testing.T) {
+	_, user := UserServicePrepareDataTest()
 	userRepository := new(repository.UserRepositoryMock)
 	userService := NewUserService(userRepository)
 	userRepository.On("Detail", uint64(1)).Return(user, errors.New("undefined"))
 	_, err := userService.Detail(uint64(1))
 	assert.Equal(t, "undefined", err.Error())
+}
 
-	// success
-	userRepository = new(repository.UserRepositoryMock)
-	userService = NewUserService(userRepository)
+func TestUserService_Detail_Success(t *testing.T) {
+	userAddRequest, user := UserServicePrepareDataTest()
+	userRepository := new(repository.UserRepositoryMock)
+	userService := NewUserService(userRepository)
 	userRepository.On("Detail", uint64(1)).Return(user, nil)
 	userDetailResponse, err := userService.Detail(uint64(1))
 	assert.Equal(t, nil, err)

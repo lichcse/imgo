@@ -5,7 +5,7 @@ dev-check-convention:
 	find . -type d | xargs -L 1 golint
 
 api-docs:
-	swag init
+	go get -u github.com/swaggo/swag/cmd/swag && swag init
 
 start:
 	go run main.go dev

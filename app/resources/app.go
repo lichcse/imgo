@@ -1,24 +1,23 @@
-package common
+package resources
 
 import (
 	"imgo/app/utils"
 	"log"
 	"time"
 
-	"github.com/jinzhu/gorm"
 	"github.com/streadway/amqp"
-
-	// mysql driver
-	_ "github.com/go-sql-driver/mysql"
+	"gorm.io/driver/mysql"
+	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 )
 
 var resource imResource
 
-// IMResource interface
+// IMResource interface of resource object
 type IMResource interface {
 	RabbiMQConn() (*amqp.Connection, error)
 	MySQLConn() (*gorm.DB, error)
-	Config() (utils.IMConfig, error)
+	Config(args []string) (utils.IMConfig, error)
 }
 
 type imResource struct {
@@ -28,13 +27,14 @@ type imResource struct {
 	mySQL        *gorm.DB
 }
 
-// NewIMResource func
-func NewIMResource(args []string) IMResource {
-	resource.args = args
+// NewIMResource func new resource object
+func NewIMResource() IMResource {
 	return &imResource{}
 }
 
-func (r *imResource) Config() (utils.IMConfig, error) {
+// Config func get config data
+func (r *imResource) Config(args []string) (utils.IMConfig, error) {
+	resource.args = args
 	if resource.config != nil {
 		return resource.config, nil
 	}
@@ -49,6 +49,7 @@ func (r *imResource) Config() (utils.IMConfig, error) {
 	return resource.config, nil
 }
 
+// RabbiMQConn func get rabbit connection
 func (r *imResource) RabbiMQConn() (*amqp.Connection, error) {
 	if resource.rabbitMQConn != nil && !resource.rabbitMQConn.IsClosed() {
 		return resource.rabbitMQConn, nil
@@ -73,20 +74,28 @@ func (r *imResource) RabbiMQConn() (*amqp.Connection, error) {
 	return rabbitMQConn, nil
 }
 
+// MySQLConn func get mysql connection
 func (r *imResource) MySQLConn() (*gorm.DB, error) {
 	if resource.mySQL != nil {
 		return resource.mySQL, nil
 	}
 
 	sqlConfig := resource.config.MySQLItem("im")
-	conn, err := gorm.Open("mysql", sqlConfig.URL)
+	config := &gorm.Config{}
+	if sqlConfig.LogMode {
+		config.Logger = logger.Default.LogMode(logger.Info)
+	}
+
+	conn, err := gorm.Open(mysql.Open(sqlConfig.URL), config)
 	if err != nil {
 		return nil, err
 	}
 
-	conn.DB().SetMaxOpenConns(sqlConfig.PoolLimit)
-	conn.DB().SetMaxIdleConns(sqlConfig.PoolLimit)
-	conn.DB().SetConnMaxLifetime(time.Duration(sqlConfig.MaxLifetime) * time.Minute)
+	sqlDB, err := conn.DB()
+	sqlDB.SetMaxOpenConns(sqlConfig.PoolLimit)
+	sqlDB.SetMaxIdleConns(sqlConfig.PoolLimit)
+	sqlDB.SetConnMaxLifetime(time.Duration(sqlConfig.MaxLifetime) * time.Minute)
 	resource.mySQL = conn
+
 	return conn, nil
 }

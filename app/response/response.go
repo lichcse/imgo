@@ -24,7 +24,7 @@ type CodeStatus struct {
 // CodeMessageMapping struct
 type CodeMessageMapping map[string]CodeStatus
 
-// IMResponse interface
+// IMResponse interface of response object
 type IMResponse interface {
 	Out(ctx *gin.Context, err error, data interface{})
 }

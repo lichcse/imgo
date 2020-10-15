@@ -1,17 +1,17 @@
 package service
 
 import (
-	"imgo/app/common/identity/v1/dto"
 	"imgo/app/modules/identity/v1/entity"
 	"imgo/app/modules/identity/v1/repository"
+	schema "imgo/app/schema/identity/v1"
 	"imgo/app/utils"
 )
 
-// UserService interface
+// UserService interface of user service object
 type UserService interface {
-	Add(userAddRequest *dto.UserAddRequest) (*dto.UserDetailResponse, error)
-	Detail(id uint64) (*dto.UserDetailResponse, error)
-	Update(id string, userUpdate *dto.UserUpdateRequest) error
+	Add(userAddRequest *schema.UserAddRequest) (*schema.UserDetailResponse, error)
+	Detail(id uint64) (*schema.UserDetailResponse, error)
+	Update(id string, userUpdate *schema.UserUpdateRequest) error
 	Delete(id string) error
 }
 
@@ -21,7 +21,7 @@ type userService struct {
 	convert  utils.IMConvert
 }
 
-// NewUserService func
+// NewUserService func new user service object
 func NewUserService(userRepo repository.UserRepository) UserService {
 	return &userService{
 		userRepo: userRepo,
@@ -30,9 +30,9 @@ func NewUserService(userRepo repository.UserRepository) UserService {
 	}
 }
 
-// Add func
-func (u *userService) Add(userAddRequest *dto.UserAddRequest) (*dto.UserDetailResponse, error) {
-	result := &dto.UserDetailResponse{}
+// Add func add new user
+func (u *userService) Add(userAddRequest *schema.UserAddRequest) (*schema.UserDetailResponse, error) {
+	result := &schema.UserDetailResponse{}
 	hash, _ := u.crypt.Hash(userAddRequest.Password)
 	user := &entity.User{
 		FullName: userAddRequest.FullName,
@@ -50,9 +50,9 @@ func (u *userService) Add(userAddRequest *dto.UserAddRequest) (*dto.UserDetailRe
 	return result, err
 }
 
-// Detail func
-func (u *userService) Detail(id uint64) (*dto.UserDetailResponse, error) {
-	result := &dto.UserDetailResponse{}
+// Detail func get detail user info
+func (u *userService) Detail(id uint64) (*schema.UserDetailResponse, error) {
+	result := &schema.UserDetailResponse{}
 	user, err := u.userRepo.Detail(id)
 	if err != nil {
 		return result, u.convert.DatabaseError(err)
@@ -62,13 +62,13 @@ func (u *userService) Detail(id uint64) (*dto.UserDetailResponse, error) {
 	return result, err
 }
 
-// Update func
-func (u *userService) Update(id string, userUpdate *dto.UserUpdateRequest) error {
+// Update func update user info
+func (u *userService) Update(id string, userUpdate *schema.UserUpdateRequest) error {
 	// TODO
 	return u.userRepo.Update(id, &entity.User{})
 }
 
-// Delete func
+// Delete func delete user info
 func (u *userService) Delete(id string) error {
 	// TODO
 	return u.userRepo.Delete(id)

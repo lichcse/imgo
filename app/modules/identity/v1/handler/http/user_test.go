@@ -3,10 +3,10 @@ package http
 import (
 	"bytes"
 	"encoding/json"
-	"imgo/app/common/identity/v1/dto"
 	"imgo/app/modules/identity/v1/service"
 	"imgo/app/modules/identity/v1/validation"
 	"imgo/app/response"
+	dto "imgo/app/schema/identity/v1"
 	"net/http"
 	"testing"
 

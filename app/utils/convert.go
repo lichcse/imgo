@@ -5,7 +5,7 @@ import (
 	"errors"
 )
 
-// IMConvert interface
+// IMConvert interface of convert object
 type IMConvert interface {
 	Object(source interface{}, destination interface{}) error
 	DatabaseError(err error) error
@@ -13,12 +13,12 @@ type IMConvert interface {
 
 type imConvert struct{}
 
-// NewIMConvert func
+// NewIMConvert func new convert object
 func NewIMConvert() IMConvert {
 	return &imConvert{}
 }
 
-// Object func
+// Object func convert object
 func (c *imConvert) Object(source interface{}, destination interface{}) error {
 	byteConvert, err := json.Marshal(source)
 	if err != nil {
@@ -29,7 +29,7 @@ func (c *imConvert) Object(source interface{}, destination interface{}) error {
 	return err
 }
 
-// DatabaseError func
+// DatabaseError func convert database error to app error code
 func (c *imConvert) DatabaseError(err error) error {
 	if err == nil {
 		return errors.New("undefined")

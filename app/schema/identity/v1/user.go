@@ -1,6 +1,6 @@
-package dto
+package v1
 
-// UserAddRequest user add request
+// UserAddRequest user add request data
 type UserAddRequest struct {
 	FullName string `json:"full_name" swaggertype:"string" maxLength:"3" maxLength:"50" example:"Lich Truong"`
 	Username string `json:"username" swaggertype:"string" format:"^[a-zA-Z0-9]+(?:-[a-zA-Z0-9]+)*$" example:"lichtv"`
@@ -8,7 +8,7 @@ type UserAddRequest struct {
 	Password string `json:"password" swaggertype:"string" example:"W3^&(80)&&^x"`
 }
 
-// UserUpdateRequest user update request
+// UserUpdateRequest user update request data
 type UserUpdateRequest struct {
 	FullName string `json:"full_name" swaggertype:"string" maxLength:"3" maxLength:"50" example:"Lich Truong"`
 	Username string `json:"username" swaggertype:"string" format:"^[a-zA-Z0-9]+(?:-[a-zA-Z0-9]+)*$" example:"lichtv"`
@@ -28,7 +28,7 @@ type UserChangePasswordRequest struct {
 	NewPassword string `json:"new_password"`
 }
 
-// UserDetailResponse user response
+// UserDetailResponse user response data
 type UserDetailResponse struct {
 	ID         uint64 `json:"id" swaggertype:"integer" example:"1"`
 	FullName   string `json:"full_name" swaggertype:"string" example:"Lich Truong"`

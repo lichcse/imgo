@@ -5,25 +5,24 @@ import (
 	"imgo/docs"
 
 	"github.com/gin-gonic/gin"
-	"github.com/jinzhu/gorm"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
+	"gorm.io/gorm"
 )
 
-var r = gin.Default()
+var route = gin.Default()
 
-// SetupRouter : router
+// SetupRouter func setup app route
 func SetupRouter(db *gorm.DB) *gin.Engine {
 	identityModule(db)
 
 	docs.SwaggerInfo.Schemes = []string{"http", "https"}
-	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
-	return r
+	route.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+	return route
 }
 
-// identity
 func identityModule(db *gorm.DB) {
-	iV1 := r.Group("/identity/v1")
+	iV1 := route.Group("/identity/v1")
 	{
 		v1.UserRoute(iV1, db)
 	}

@@ -2,10 +2,10 @@ package http
 
 import (
 	"errors"
-	"imgo/app/common/identity/v1/dto"
 	"imgo/app/modules/identity/v1/service"
 	"imgo/app/modules/identity/v1/validation"
 	"imgo/app/response"
+	schema "imgo/app/schema/identity/v1"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
@@ -18,7 +18,7 @@ type UserHandler struct {
 	userValidation validation.UserValidation
 }
 
-// NewUserHandler func
+// NewUserHandler func new user handler
 func NewUserHandler(
 	userService service.UserService,
 	response response.IMResponse,
@@ -38,11 +38,11 @@ func NewUserHandler(
 // @Accept json
 // @Produce json
 // @Param lang query string false "string" enums(en, vi)
-// @Param UserAddRequest body dto.UserAddRequest true "Add a new user body"
-// @Success 200 {object} dto.UserDetailResponse "success"
+// @Param UserAddRequest body schema.UserAddRequest true "Add a new user body"
+// @Success 200 {object} schema.UserDetailResponse "success"
 // @Router /identity/v1/user [post]
 func (u *UserHandler) Add(ctx *gin.Context) {
-	userAddRequest := &dto.UserAddRequest{}
+	userAddRequest := &schema.UserAddRequest{}
 	err := ctx.BindJSON(userAddRequest)
 	if err != nil {
 		u.response.Out(ctx, errors.New("not_allow"), nil)
@@ -71,7 +71,7 @@ func (u *UserHandler) Add(ctx *gin.Context) {
 // @Produce json
 // @Param lang query string false "string" enums(en, vi)
 // @Param id path int true "number"
-// @Success 200 {object} dto.UserDetailResponse "success"
+// @Success 200 {object} schema.UserDetailResponse "success"
 // @Router /identity/v1/user/{id} [get]
 func (u *UserHandler) Detail(ctx *gin.Context) {
 	id, err := strconv.Atoi(ctx.Param("id"))

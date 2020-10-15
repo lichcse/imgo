@@ -1,9 +1,9 @@
 package utils
 
-// Lang struct
+// Lang struct of language
 type Lang map[string]string
 
-// IMLanguage interface
+// IMLanguage interface of language object
 type IMLanguage interface {
 	GetMessage(code string) string
 	SetLanguage(lang string)
@@ -17,23 +17,23 @@ type imLanguage struct {
 	dataLang       map[string]Lang
 }
 
-// NewIMLanguage func
+// NewIMLanguage func new language object
 func NewIMLanguage(dataLang map[string]Lang, defaultLang string) IMLanguage {
 	return &imLanguage{dataLang: dataLang, defaultLang: defaultLang, unknownMessage: "Unknown message."}
 }
 
-// SetLanguage func
+// SetLanguage func set language
 func (l *imLanguage) SetLanguage(lang string) {
 	l.currentLang = lang
 }
 
-// SetUnknownMessage func
+// SetUnknownMessage func set default message
 // The unknown message will return when it not found in the current or default language.
 func (l *imLanguage) SetUnknownMessage(message string) {
 	l.unknownMessage = message
 }
 
-// GetMessage func
+// GetMessage func get message by code
 // This function will return the message with the corresponding code.
 func (l *imLanguage) GetMessage(code string) string {
 	lang, useCurrentLang := l.dataLang[l.currentLang]

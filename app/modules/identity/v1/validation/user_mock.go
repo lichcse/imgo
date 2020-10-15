@@ -1,7 +1,7 @@
 package validation
 
 import (
-	"imgo/app/common/identity/v1/dto"
+	schema "imgo/app/schema/identity/v1"
 
 	"github.com/stretchr/testify/mock"
 )
@@ -12,7 +12,7 @@ type UserValidationMock struct {
 }
 
 // Add func
-func (r *UserValidationMock) Add(userAddRequest *dto.UserAddRequest) error {
+func (r *UserValidationMock) Add(userAddRequest *schema.UserAddRequest) error {
 	args := r.Called(userAddRequest)
 	return args.Error(0)
 }

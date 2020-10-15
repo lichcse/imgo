@@ -19,11 +19,12 @@ type rest struct {
 	errorMessageMapping CodeMessageMapping
 }
 
-// NewRestResponse func
+// NewRestResponse func new rest response object
 func NewRestResponse(language utils.IMLanguage, errorMessageMapping CodeMessageMapping) IMResponse {
 	return &rest{language: language, errorMessageMapping: errorMessageMapping}
 }
 
+// Out func set api response
 func (r *rest) Out(ctx *gin.Context, err error, data interface{}) {
 	r.setLang(ctx)
 	result := RestResponse{}

@@ -1,14 +1,14 @@
 package validation
 
 import (
-	"imgo/app/common/identity/v1/dto"
+	schema "imgo/app/schema/identity/v1"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 )
 
 func TestUserValidation_Add(t *testing.T) {
-	userAddRequest := &dto.UserAddRequest{}
+	userAddRequest := &schema.UserAddRequest{}
 	userValidation := NewUserValidation()
 	userAddRequest.FullName = ""
 	err := userValidation.Add(userAddRequest)

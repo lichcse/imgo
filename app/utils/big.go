@@ -7,7 +7,7 @@ import (
 	"github.com/allegro/bigcache"
 )
 
-// BigCache interface
+// BigCache interface of big cache object
 type BigCache interface {
 	Get(key string) (string, error)
 	Set(key string, value string) error
@@ -55,7 +55,7 @@ type bigCache struct {
 	cache *bigcache.BigCache
 }
 
-// NewBigCache func
+// NewBigCache func new big cache object
 func NewBigCache() BigCache {
 	cache, err := bigcache.NewBigCache(config)
 	if err != nil {
@@ -64,7 +64,7 @@ func NewBigCache() BigCache {
 	return &bigCache{cache: cache}
 }
 
-// Get func
+// Get func get the value of key
 func (b *bigCache) Get(key string) (string, error) {
 	value, err := b.cache.Get(key)
 	if err != nil {
@@ -73,7 +73,7 @@ func (b *bigCache) Get(key string) (string, error) {
 	return string(value), nil
 }
 
-// Set func
+// Set func set key to hold the string value
 func (b *bigCache) Set(key string, value string) error {
 	return b.cache.Set(key, []byte(value))
 }

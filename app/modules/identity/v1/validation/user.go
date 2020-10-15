@@ -2,26 +2,26 @@ package validation
 
 import (
 	"errors"
-	"imgo/app/common/identity/v1/dto"
+	schema "imgo/app/schema/identity/v1"
 	"imgo/app/utils"
 )
 
-// UserValidation func
+// UserValidation interface of user validation object
 type UserValidation interface {
-	Add(userAdd *dto.UserAddRequest) error
+	Add(userAdd *schema.UserAddRequest) error
 }
 
 type userValidation struct {
 	validation utils.IMValidation
 }
 
-// NewUserValidation func
+// NewUserValidation func new user validation object
 func NewUserValidation() UserValidation {
 	return &userValidation{validation: utils.NewIMValidation()}
 }
 
-// Add func
-func (u *userValidation) Add(userAddRequest *dto.UserAddRequest) error {
+// Add func validate data add
+func (u *userValidation) Add(userAddRequest *schema.UserAddRequest) error {
 
 	if len(userAddRequest.FullName) < 3 || len(userAddRequest.FullName) > 50 {
 		return errors.New("user_invalid_full_name")

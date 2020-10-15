@@ -4,18 +4,16 @@ import (
 	"imgo/app/routes"
 	"imgo/app/utils"
 
-	"imgo/app/common"
+	"imgo/app/resources"
 
-	// mysql driver
-	_ "github.com/go-sql-driver/mysql"
-	"github.com/jinzhu/gorm"
+	"gorm.io/gorm"
 )
 
-// InitApp func
+// InitApp func init app resource
 func InitApp(args []string) error {
 
-	resource := common.NewIMResource(args)
-	config, err := resource.Config()
+	resource := resources.NewIMResource()
+	config, err := resource.Config(args)
 	if err != nil {
 		return err
 	}
@@ -23,9 +21,6 @@ func InitApp(args []string) error {
 	mySQL, err := resource.MySQLConn()
 	if err != nil {
 		return err
-	}
-	if mySQL != nil {
-		defer mySQL.Close()
 	}
 
 	rabbitMQConn, err := resource.RabbiMQConn()
@@ -42,7 +37,7 @@ func InitApp(args []string) error {
 	return nil
 }
 
-// setRoute func
+// setRoute func setup app route
 func setRoute(config utils.IMConfig, db *gorm.DB) error {
 	router := routes.SetupRouter(db)
 	return router.Run(config.GetPort())

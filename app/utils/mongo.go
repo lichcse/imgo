@@ -10,7 +10,7 @@ import (
 // global mongo session
 var gMongoSession = make(map[string]*mgo.Session)
 
-// MongoDB interface
+// MongoDB interface of mongo object
 type MongoDB interface {
 	S() (*mgo.Session, error)
 	DB() (*mgo.Database, func())
@@ -22,13 +22,13 @@ type mongoDB struct {
 	config MongoConfig
 }
 
-// NewMongoDB func
+// NewMongoDB func new mongo object
 // This function will be returned to the interface of MongoDB
 func NewMongoDB(config MongoConfig) MongoDB {
 	return &mongoDB{config: config}
 }
 
-// Conn func
+// Conn func make connect to mongo
 // This function will try to connect to the database
 func (m *mongoDB) Conn() error {
 	var err error
@@ -46,7 +46,7 @@ func (m *mongoDB) Conn() error {
 	return err
 }
 
-// S func
+// S func get mongo session
 // This function will be returned to the session
 func (m *mongoDB) S() (*mgo.Session, error) {
 	s, ok := gMongoSession[m.config.Database]
@@ -62,7 +62,7 @@ func (m *mongoDB) S() (*mgo.Session, error) {
 	return s, err
 }
 
-// DB func
+// DB func get mongo db
 // This function will be returned to the database
 func (m *mongoDB) DB() (*mgo.Database, func()) {
 	s, err := m.S()
@@ -72,7 +72,7 @@ func (m *mongoDB) DB() (*mgo.Database, func()) {
 	panic(fmt.Sprintf("Can not connect to %s (%s).", m.config.URL, err.Error()))
 }
 
-// C func
+// C func get mongo collection
 // This function will be returned to the collection
 func (m *mongoDB) C(name string) (*mgo.Collection, func()) {
 	db, cleanup := m.DB()

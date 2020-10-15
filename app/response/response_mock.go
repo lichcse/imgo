@@ -10,7 +10,7 @@ type IMResponseMock struct {
 	mock.Mock
 }
 
-// Out func
+// Out func mock set response
 func (r *IMResponseMock) Out(ctx *gin.Context, err error, data interface{}) {
 	r.Called(ctx, err, data)
 }

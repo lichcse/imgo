@@ -10,32 +10,33 @@ import (
 	yaml "gopkg.in/yaml.v2"
 )
 
-// MongoConfig struct
+// MongoConfig struct mongo config info
 type MongoConfig struct {
 	URL       string `yaml:"url"`
 	Database  string `yaml:"database"`
 	PoolLimit int    `yaml:"pool_limit"`
 }
 
-// MySQLConfig struct
+// MySQLConfig struct mysql config info
 type MySQLConfig struct {
 	URL         string `yaml:"url"`
 	Database    string `yaml:"database"`
 	PoolLimit   int    `yaml:"pool_limit"`
 	MaxLifetime int    `yaml:"max_life_time"`
+	LogMode     bool   `yaml:"log_mode"`
 }
 
-// RedisConfig struct
+// RedisConfig struct redis config info
 type RedisConfig struct {
 	URL string `yaml:"url"`
 }
 
-// RabbitMQConfig struct
+// RabbitMQConfig struct rabbit config info
 type RabbitMQConfig struct {
 	URL string `yaml:"url"`
 }
 
-// EnvironmentConfig struct
+// EnvironmentConfig struct env config info
 type EnvironmentConfig struct {
 	Mongo    map[string]MongoConfig `yaml:"mongo"`
 	MySQL    map[string]MySQLConfig `yaml:"mysql"`
@@ -44,7 +45,7 @@ type EnvironmentConfig struct {
 	PORT     string                 `yaml:"port"`
 }
 
-// IMConfig interface
+// IMConfig interface of config object
 type IMConfig interface {
 	Load(args []string) error
 	GetPort() string
@@ -69,12 +70,12 @@ var cfgMapping = map[string]string{
 	"unit_test": "unit_test.yaml",
 }
 
-// NewIMConfig func
+// NewIMConfig func new config object
 func NewIMConfig() IMConfig {
 	return &imConfig{projectName: "imgo"}
 }
 
-// Load func
+// Load func load data from config file
 func (c *imConfig) Load(args []string) error {
 	if len(args) < 1 {
 		return errors.New("")
@@ -97,7 +98,7 @@ func (c *imConfig) Load(args []string) error {
 	return yaml.Unmarshal(configData, &cfg)
 }
 
-// GetPort func
+// GetPort func get server port
 func (c *imConfig) GetPort() string {
 	if len(cfg.PORT) <= 0 {
 		return ":8080"
@@ -106,12 +107,12 @@ func (c *imConfig) GetPort() string {
 	return fmt.Sprintf(":%s", cfg.PORT)
 }
 
-// Mongo func
+// Mongo func get all mongo config info
 func (c *imConfig) Mongo() map[string]MongoConfig {
 	return cfg.Mongo
 }
 
-// MongoItem func
+// MongoItem func get item mongo config info
 func (c *imConfig) MongoItem(db string) MongoConfig {
 	if dbInfo, ok := cfg.Mongo[db]; ok {
 		return dbInfo
@@ -120,12 +121,12 @@ func (c *imConfig) MongoItem(db string) MongoConfig {
 	return MongoConfig{}
 }
 
-// MySQL func
+// MySQL func get all mysql config info
 func (c *imConfig) MySQL() map[string]MySQLConfig {
 	return cfg.MySQL
 }
 
-// MySQLItem func
+// MySQLItem func get item mysql config info
 func (c *imConfig) MySQLItem(db string) MySQLConfig {
 	if dbInfo, ok := cfg.MySQL[db]; ok {
 		return dbInfo
@@ -134,7 +135,7 @@ func (c *imConfig) MySQLItem(db string) MySQLConfig {
 	return MySQLConfig{}
 }
 
-// RabbitMQ func
+// RabbitMQ func get rabbit config info
 func (c *imConfig) RabbitMQ() RabbitMQConfig {
 	return cfg.RabbitMQ
 }

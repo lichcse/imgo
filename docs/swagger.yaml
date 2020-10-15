@@ -1,5 +1,5 @@
 definitions:
-  dto.UserAddRequest:
+  v1.UserAddRequest:
     properties:
       email:
         example: example@imgo.com
@@ -16,7 +16,7 @@ definitions:
         format: ^[a-zA-Z0-9]+(?:-[a-zA-Z0-9]+)*$
         type: string
     type: object
-  dto.UserDetailResponse:
+  v1.UserDetailResponse:
     properties:
       created_at:
         example: "1991-02-13 10:10:10"
@@ -42,7 +42,6 @@ definitions:
     type: object
 info:
   contact: {}
-  license: {}
 paths:
   /identity/v1/user:
     post:
@@ -62,14 +61,14 @@ paths:
         name: UserAddRequest
         required: true
         schema:
-          $ref: '#/definitions/dto.UserAddRequest'
+          $ref: '#/definitions/v1.UserAddRequest'
       produces:
       - application/json
       responses:
         "200":
           description: success
           schema:
-            $ref: '#/definitions/dto.UserDetailResponse'
+            $ref: '#/definitions/v1.UserDetailResponse'
       summary: Add a new user
       tags:
       - identity
@@ -97,7 +96,7 @@ paths:
         "200":
           description: success
           schema:
-            $ref: '#/definitions/dto.UserDetailResponse'
+            $ref: '#/definitions/v1.UserDetailResponse'
       summary: Detail info of user
       tags:
       - identity

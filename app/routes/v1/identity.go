@@ -11,12 +11,12 @@ import (
 	"imgo/app/modules/identity/v1/validation"
 
 	"github.com/gin-gonic/gin"
-	"github.com/jinzhu/gorm"
+	"gorm.io/gorm"
 )
 
 var restResponse = response.NewRestResponse(utils.NewIMLanguage(resource.IdentityLang, resource.DefaultLang), resource.CodeMessageMapping)
 
-// UserRoute : user route
+// UserRoute : user route group
 func UserRoute(r *gin.RouterGroup, db *gorm.DB) {
 	userRepository := repository.NewUserRepository(db)
 	userHandler := http.NewUserHandler(service.NewUserService(userRepository), restResponse, validation.NewUserValidation())

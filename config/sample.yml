@@ -10,6 +10,7 @@ mysql:
     database: "im"
     pool_limit: 200
     max_life_time: 10
+    log_mode: true
 redis:
   url: "redis://127.0.0.1:6379/0"
 rabbitmq:

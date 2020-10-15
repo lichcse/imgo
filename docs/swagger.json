@@ -1,8 +1,7 @@
 {
     "swagger": "2.0",
     "info": {
-        "contact": {},
-        "license": {}
+        "contact": {}
     },
     "paths": {
         "/identity/v1/user": {
@@ -35,7 +34,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/dto.UserAddRequest"
+                            "$ref": "#/definitions/v1.UserAddRequest"
                         }
                     }
                 ],
@@ -43,7 +42,7 @@
                     "200": {
                         "description": "success",
                         "schema": {
-                            "$ref": "#/definitions/dto.UserDetailResponse"
+                            "$ref": "#/definitions/v1.UserDetailResponse"
                         }
                     }
                 }
@@ -85,7 +84,7 @@
                     "200": {
                         "description": "success",
                         "schema": {
-                            "$ref": "#/definitions/dto.UserDetailResponse"
+                            "$ref": "#/definitions/v1.UserDetailResponse"
                         }
                     }
                 }
@@ -93,7 +92,7 @@
         }
     },
     "definitions": {
-        "dto.UserAddRequest": {
+        "v1.UserAddRequest": {
             "type": "object",
             "properties": {
                 "email": {
@@ -116,7 +115,7 @@
                 }
             }
         },
-        "dto.UserDetailResponse": {
+        "v1.UserDetailResponse": {
             "type": "object",
             "properties": {
                 "created_at": {

@@ -11,7 +11,7 @@ import (
 
 var conn *amqp.Connection
 
-// QueueInfo struct
+// QueueInfo struct info of queue
 type QueueInfo struct {
 	Name             string
 	Durable          bool
@@ -21,14 +21,14 @@ type QueueInfo struct {
 	Arguments        amqp.Table
 }
 
-// PublishInfo struct
+// PublishInfo struct info of publisher
 type PublishInfo struct {
 	Exchange  string
 	Mandatory bool
 	Immediate bool
 }
 
-// ConsumeInfo struct
+// ConsumeInfo struct info of consumer
 type ConsumeInfo struct {
 	Consumer  string
 	AutoAck   bool
@@ -38,7 +38,7 @@ type ConsumeInfo struct {
 	Arguments amqp.Table
 }
 
-// RabbitMQ interface
+// RabbitMQ interface of rabbit object
 type RabbitMQ interface {
 	Connect() (*amqp.Connection, error)
 	HealthCheck(callback func(mess string))
@@ -52,12 +52,12 @@ type rabbitMQ struct {
 	delay int
 }
 
-// NewRabbitMQ func
+// NewRabbitMQ func new rabbit object
 func NewRabbitMQ(url string) RabbitMQ {
 	return &rabbitMQ{url: url, delay: 0}
 }
 
-// Connect func
+// Connect func get rabbit connection
 func (r *rabbitMQ) Connect() (*amqp.Connection, error) {
 	log.Printf("RabbitMQ: connect to %s\n", r.url)
 	c, err := amqp.Dial(r.url)
@@ -69,7 +69,7 @@ func (r *rabbitMQ) Connect() (*amqp.Connection, error) {
 	return conn, err
 }
 
-// HealthCheck func
+// HealthCheck func helth check rabbit connection
 func (r *rabbitMQ) HealthCheck(callback func(mess string)) {
 	var Err *amqp.Error
 	for {
@@ -82,7 +82,7 @@ func (r *rabbitMQ) HealthCheck(callback func(mess string)) {
 	}
 }
 
-// RetryConnect func
+// RetryConnect func retry connect to rabbit
 func (r *rabbitMQ) RetryConnect(callback func(mess string)) {
 	r.err = errors.New("RabbitMQ: re-connect to server")
 	for {
@@ -124,7 +124,7 @@ func (r *rabbitMQ) makeChannelAndQueue(queueInfo QueueInfo) (*amqp.Channel, amqp
 	return ch, q, err
 }
 
-// Publish func
+// Publish func publish message
 func (r *rabbitMQ) Publish(queueInfo QueueInfo, publishInfo PublishInfo, data string) error {
 	ch, q, err := r.makeChannelAndQueue(queueInfo)
 	defer ch.Close()
@@ -143,7 +143,7 @@ func (r *rabbitMQ) Publish(queueInfo QueueInfo, publishInfo PublishInfo, data st
 		})
 }
 
-// Consume func
+// Consume func consume message
 func (r *rabbitMQ) Consume(queueInfo QueueInfo, consumeInfo ConsumeInfo, callback func(data string) error) error {
 	ch, q, err := r.makeChannelAndQueue(queueInfo)
 	defer ch.Close()
