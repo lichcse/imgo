@@ -17,7 +17,7 @@ var resource imResource
 type IMResource interface {
 	RabbiMQConn() (*amqp.Connection, error)
 	MySQLConn() (*gorm.DB, error)
-	Config(args []string) (utils.IMConfig, error)
+	Config(args []string, configFile string) (utils.IMConfig, error)
 }
 
 type imResource struct {
@@ -33,19 +33,18 @@ func NewIMResource() IMResource {
 }
 
 // Config func get config data
-func (r *imResource) Config(args []string) (utils.IMConfig, error) {
+func (r *imResource) Config(args []string, configFile string) (utils.IMConfig, error) {
 	resource.args = args
 	if resource.config != nil {
 		return resource.config, nil
 	}
 
 	resource.config = utils.NewIMConfig()
-	err := resource.config.Load(resource.args)
+	err := resource.config.Load(configFile)
 	if err != nil {
 		return nil, nil
 	}
 
-	resource.config.Load(resource.args)
 	return resource.config, nil
 }
 
