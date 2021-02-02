@@ -33,7 +33,7 @@ func TestIMConfig_Mongo(t *testing.T) {
 	Equal(t, nil, err)
 
 	mongoConfig := imConfig.Mongo()
-	Equal(t, 0, len(mongoConfig))
+	Equal(t, 1, len(mongoConfig))
 }
 
 func TestIMConfig_MongoItem(t *testing.T) {
@@ -43,7 +43,7 @@ func TestIMConfig_MongoItem(t *testing.T) {
 	Equal(t, nil, err)
 
 	mongoConfig := imConfig.MongoItem("im")
-	Equal(t, "", mongoConfig.Database)
+	Equal(t, "im", mongoConfig.Database)
 }
 
 func TestIMConfig_MySQL(t *testing.T) {
