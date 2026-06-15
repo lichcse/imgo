@@ -10,12 +10,24 @@ Tài liệu này cung cấp thông tin chi tiết về tất cả các API trong
 
 ### Identity Module (`/identity/v1`)
 
+#### User APIs
+
 | # | Method | Endpoint | Mô tả | Tài liệu |
 |---|--------|----------|-------|----------|
 | 1 | POST | `/identity/v1/user` | Thêm mới một user | [Xem chi tiết](./user-add.md) |
 | 2 | GET | `/identity/v1/user/:id` | Lấy thông tin chi tiết của user | [Xem chi tiết](./user-detail.md) |
 | 3 | PUT | `/identity/v1/user/:id` | Cập nhật thông tin user | [Xem chi tiết](./user-update.md) |
 | 4 | DELETE | `/identity/v1/user/:id` | Xóa user khỏi hệ thống | [Xem chi tiết](./user-delete.md) |
+
+#### Post APIs
+
+| # | Method | Endpoint | Mô tả | Tài liệu |
+|---|--------|----------|-------|----------|
+| 5 | POST | `/identity/v1/post` | Thêm mới một bài viết | [Xem chi tiết](./post-add.md) |
+| 6 | GET | `/identity/v1/post` | Lấy danh sách bài viết | [Xem chi tiết](./post-list.md) |
+| 7 | GET | `/identity/v1/post/:id` | Lấy thông tin chi tiết bài viết | [Xem chi tiết](./post-detail.md) |
+| 8 | PUT | `/identity/v1/post/:id` | Cập nhật bài viết | [Xem chi tiết](./post-update.md) |
+| 9 | DELETE | `/identity/v1/post/:id` | Xóa bài viết khỏi hệ thống | [Xem chi tiết](./post-delete.md) |
 
 ---
 
@@ -103,3 +115,4 @@ curl -X GET http://localhost:8080/identity/v1/user/1 \
 | Ngày | Mô tả |
 |------|-------|
 | 2024-01-15 | Thêm tài liệu API user (Add, Detail, Update, Delete) |
+| 2024-01-16 | Thêm tài liệu API post (Add, List, Detail, Update, Delete) |
