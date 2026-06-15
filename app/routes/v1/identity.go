@@ -25,3 +25,14 @@ func UserRoute(r *gin.RouterGroup, db *gorm.DB) {
 	r.PUT("/user/:id", userHandler.Update)
 	r.DELETE("/user/:id", userHandler.Delete)
 }
+
+// PostRoute : post route group
+func PostRoute(r *gin.RouterGroup, db *gorm.DB) {
+	postRepository := repository.NewPostRepository(db)
+	postHandler := http.NewPostHandler(service.NewPostService(postRepository), restResponse, validation.NewPostValidation())
+	r.POST("/post", postHandler.Add)
+	r.GET("/post", postHandler.List)
+	r.GET("/post/:id", postHandler.Detail)
+	r.PUT("/post/:id", postHandler.Update)
+	r.DELETE("/post/:id", postHandler.Delete)
+}
